@@ -5,7 +5,7 @@ import BookSearch from './Pages/BookSearch'
 import './App.css'
 
 //function App 
-function App() {
+export default function App() {
       return (
         <div className="app">
             {/* Router is used for page routing */}
@@ -14,5 +14,3 @@ function App() {
         </div>
       )
 }
-
-export default App

@@ -3,21 +3,11 @@ import * as BooksAPI from '../BooksAPI'
 import ShelfSection from './ShelfSection'
 import AddBook from './AddBook'
 
-class Shelf extends Component {
+//class Shelf
+export default class Shelf extends Component {
 
     state = {
         books: []
-    }
-
-    onChangeShelf = (book, newShelf) => 
-    {
-        BooksAPI.update(book,newShelf).then((result) =>{
-            console.log('Update response', result)
-            book.shelf = newShelf
-            var updatedBooks = this.state.books.filter((resultBook) =>resultBook.id !== book.id)
-            updatedBooks.push(book)
-            this.setState({books: updatedBooks})
-        })
     }
 
     componentDidMount() 
@@ -29,7 +19,20 @@ class Shelf extends Component {
         })
     }
 
+    changeShelf = (book, newShelf) => 
+    {
+        BooksAPI.update(book,newShelf).then((result) =>{
+            console.log('Update response', result)
+            book.shelf = newShelf
+            var updatedBooks = this.state.books.filter((resultBook) =>resultBook.id !== book.id)
+            updatedBooks.push(book)
+            this.setState({books: updatedBooks})
+        })
+    }
+
     render() {
+
+        //Book shelf titles
         const compartments = [
             {type: 'currentlyReading', title: 'In Progress'},
             {type: 'wantToRead', title: 'Next Up'},
@@ -47,12 +50,7 @@ class Shelf extends Component {
                             return(
                                 <div className="bookshelf" key={index}>
                                     <h2 className="bookshelf-title">{compartment.title}</h2>
-                                        <ShelfSection
-                                            key={index}
-                                            books={compartmentBooks}
-                                            compartmentsList={compartments}
-                                            onChangeShelf={this.onChangeShelf}
-                                        />
+                                        <ShelfSection key={index} books={compartmentBooks} compartmentsList={compartments} changeShelf={this.changeShelf}/>
                                 </div>
                             )
                         })}
@@ -66,4 +64,3 @@ class Shelf extends Component {
         )
     }
 }
-export default Shelf

@@ -3,30 +3,35 @@ import { Link } from 'react-router-dom'
 import Book from '../Section/Book'
 import * as BooksAPI from '../BooksAPI'
 
+//class BookSearch
+//working should be
+//to search and return match book list
+//if not found show - not found
+//works properly with multiple words, noo book thumbnail or author
 
-// 
-class BookSearch extends Component {
+export default class BookSearch extends Component {
 
     state = {
         books:[],
         searchResult:[],
-        hasError:false
+        searchError:false
     }
 
     componentDidMount(){
         this.setState({
-            books: this.props.location.state.booksFromHomepage})
+            books: this.props.location.state.booksFromHome})
     }
 
-    onSearch = (event) => {
-        const searchQuery = event.target.value
-        if(searchQuery) {
-            BooksAPI.search(searchQuery).then((resultBooks)=>{
+    searching = event => {
+        const searchInput = event.target.value
+        
+        if(searchInput) {
+            BooksAPI.search(searchInput).then((resultBooks)=>{
                 if(!resultBooks || resultBooks.hasOwnProperty('error')){
-                    this.setState({searchResult: [], hasError: true })
+                    this.setState({searchResult: [], searchError: true })
                 } else {
-                    this.setState({searchResult: resultBooks, hasError:false})
-                    this.syncBookShelfProperty()
+                    this.setState({searchResult: resultBooks, searchError:false})
+                    this.syncBookShelf()
                 }
             })
         } else {
@@ -34,7 +39,7 @@ class BookSearch extends Component {
         }
     }
 
-    syncBookShelfProperty = () => {
+    syncBookShelf = () => {
         const books= this.state.books
         const searchResult = this.state.searchResult
         if(searchResult.length > 0) {
@@ -49,7 +54,7 @@ class BookSearch extends Component {
         this.setState({searchResult: searchResult})
     }
 
-    onChangeShelf = (book,shelf) => {
+    changeShelf = (book,shelf) => {
         BooksAPI.update(book,shelf).then((result) => {
             book.shelf = shelf
             var updatedBooks = this.state.books.filter((resultBook) =>resultBook.id !== book.id)
@@ -61,16 +66,21 @@ class BookSearch extends Component {
 
    render() {
        const searchResult = this.state.searchResult
-       const hasError = this.state.hasError
+       const searchError = this.state.searchError
        return(
         <div className="search-books">
             <div className="search-books-bar">
             <Link to="/" className="close-search">Close</Link>
                     <div className="search-books-input-wrapper">
+                    {/*
+                        NOTES: The search from BooksAPI is limited to a particular set of search terms.
+                        You can find these search terms here:
+                        https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+                        However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+                        you don't find a specific author or title. Every search is limited by search terms.
+                    */}
                     <input
-                         type="text"
-                         onChange={this.onSearch}
-                         placeholder="Search by title or author"/>
+                         type="text" onChange={this.searching} placeholder="Search by title or author"/>
                     </div>
             </div>
             <div className="search-books-results">
@@ -84,13 +94,13 @@ class BookSearch extends Component {
                         <Book
                             key={book.id}
                             book={book}
-                            onChangeShelf={this.onChangeShelf}
+                            changeShelf={this.changeShelf}
                         />
                     ))}
                 </ol>
                 </div>
                 )}
-                {hasError && (
+                {searchError && (
                     <div>
                         <h3>No book found. Please try again !</h3>
                     </div>
@@ -100,5 +110,3 @@ class BookSearch extends Component {
        )
    }
 }
-
-export default BookSearch
