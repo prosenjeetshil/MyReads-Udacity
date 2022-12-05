@@ -8,9 +8,9 @@ This is a react project and it is part of Udacity Frontend Nanodegree course. Th
 
 Clone the repository, change directories, and use NPM to install the dependencies.
 
-$ git clone https://github.com/prosenjeetshil/MyReads-Udacity.git
-$ cd reactnd-project-myreads
-$ npm install
+- $ git clone https://github.com/prosenjeetshil/MyReads-Udacity.git
+- $ cd reactnd-project-myreads
+- $ npm install
 
 - install dependencies with `npm install`
 - start with `npm start`
