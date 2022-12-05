@@ -12,8 +12,8 @@ $ git clone https://github.com/prosenjeetshil/MyReads-Udacity.git
 $ cd reactnd-project-myreads
 $ npm install
 
-- install dependencies with `npm install` or `yarn install`
-- start with `npm start` or `yarn start`
+- install dependencies with `npm install`
+- start with `npm start`
 
 The project can be viewed in the browser at
 - [http://localhost:3000](http://localhost:3000)
