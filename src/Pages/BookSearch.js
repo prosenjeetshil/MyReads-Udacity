@@ -32,17 +32,18 @@ const BookSearch = ({ location }) => {
   };
 
   const syncBookShelf = (books, searchResult) => {
-    if (searchResult.length > 0) {
-    books.forEach(book => {
-      searchResult.forEach(searchResultBook => {
-        if (book.id === searchResultBook.id) {
-          searchResultBook.shelf = book.shelf
-        }
-      })
-    })
-  }
-    setSearchResult(searchResult)
-  }
+    if (books && searchResult) {
+      books.forEach(book => {
+        searchResult.forEach(searchResultBook => {
+          if (book.id === searchResultBook.id) {
+            searchResultBook.shelf = book.shelf
+          }
+        })
+      });
+    
+      setSearchResult(searchResult);
+    }
+  };  
 
   const changeShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((result) => {
